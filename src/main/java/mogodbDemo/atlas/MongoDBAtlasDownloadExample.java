@@ -10,10 +10,7 @@ import java.util.List;
 public class MongoDBAtlasDownloadExample {
     public MongoDBAtlasDownloadExample() {
 
-        //Skriv in rätt url!
         String uri = "mongodb+srv://test:test@cluster0.xfxbh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-        //@cluster0.xfxbh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("sample_mflix");
@@ -32,8 +29,7 @@ public class MongoDBAtlasDownloadExample {
                 System.out.println(movie);
             }
 
-            //Här gör du anrop till alla dina funktioner som ska skriva ut svaren på frågorna som
-            //efterfrågas i uppgiften
+            //Här gör du anrop till alla dina funktioner som ska skriva ut svaren på frågorna som efterfrågas i uppgiften
 
 
         } catch (Exception e) {
