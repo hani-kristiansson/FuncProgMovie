@@ -27,12 +27,12 @@ public class MongoDBAtlasDownloadExample {
                 }
             }
 
-            /*
+
             // Skriver ut alla filmer
-            for (Movie movie : movieList) {
-                System.out.println(movie);
-            }
-             */
+//            for (Movie movie : movieList) {
+//                System.out.println(movie);
+//            }
+
 
             ////TODO Här gör du anrop till alla dina funktioner som ska skriva ut svaren på frågorna som efterfrågas i uppgiften
             int numberOfMovies = movieSearch.countNumberOfMovies(movieList);
@@ -48,7 +48,7 @@ public class MongoDBAtlasDownloadExample {
             System.out.println();
 
             List<String> actorsInMovieWithHighestRating= movieSearch.actorsInMovieWithHighestRating(movieList);
-            System.out.println("Actions in movie with highest rating: " + actorsInMovieWithHighestRating);
+            System.out.println("Actors in movie with highest rating: " + actorsInMovieWithHighestRating);
             System.out.println();
 
             String movieTitleWhereSmallestCast = movieSearch.getMovieTitleWhereSmallestCast(movieList);
