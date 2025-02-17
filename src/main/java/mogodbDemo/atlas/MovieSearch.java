@@ -38,7 +38,7 @@ public class MovieSearch {
 
 
 
-    //Vad hette den skådis som var med i flest filmer? Returnera en String
+    //Vad hette den skådis som var med i flest filmer? Returnera en String eller list
 
 
 
