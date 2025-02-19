@@ -7,7 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 
-public class MongoClientConnectionExample {
+public class MongoClientConnection {
     public static void main(String[] args) {
 
         String connectionString = "mongodb+srv://test:test@cluster0.xfxbh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";

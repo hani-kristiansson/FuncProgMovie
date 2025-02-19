@@ -4,14 +4,17 @@ import com.mongodb.client.*;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 
-public class MongoDBAtlasDownloadExample {
+public class Main {
 
     private final MovieSearch movieSearch = new MovieSearch();
 
-    public MongoDBAtlasDownloadExample() {
+    public Main() {
 
         String uri = "mongodb+srv://test:test@cluster0.xfxbh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -27,40 +30,67 @@ public class MongoDBAtlasDownloadExample {
                 }
             }
 
-
             // Skriver ut alla filmer
 //            for (Movie movie : movieList) {
 //                System.out.println(movie);
 //            }
 
-
             ////TODO Här gör du anrop till alla dina funktioner som ska skriva ut svaren på frågorna som efterfrågas i uppgiften
             int numberOfMovies = movieSearch.countNumberOfMovies(movieList);
             System.out.println("Number of movies in 1975: " + numberOfMovies);
-            System.out.println();
 
             int longestRuntimeInMinutes = movieSearch.longestRuntimeInMinutes(movieList);
             System.out.println("Longest runtime in Minutes: " + longestRuntimeInMinutes);
-            System.out.println();
 
             int numberOfGenrer = movieSearch.countNumberOfGenrer(movieList);
             System.out.println("Number of genrers: " + numberOfGenrer);
-            System.out.println();
 
+            ///v1
             List<String> actorsInMovieWithHighestRating= movieSearch.actorsInMovieWithHighestRating(movieList);
             System.out.println("Actors in movie with highest rating: " + actorsInMovieWithHighestRating);
-            System.out.println();
+
+            ///v2 with Hof
+            Comparator<Movie> imdbRatingComparator =
+                    ((movie1, movie2) ->((Double) movie1.getImdbRating()).compareTo(movie2.getImdbRating()));
+
+            List<String> actorsInMovieWithHighestRatingHof= movieSearch.actorsInMovieWithHighestRatingHof(movieList, imdbRatingComparator);
+            System.out.println("Actors in movie with highest rating with Hof: " + actorsInMovieWithHighestRatingHof);
+
 
             String movieTitleWhereSmallestCast = movieSearch.getMovieTitleWhereSmallestCast(movieList);
             System.out.println("Movie title with smallest cast: " + movieTitleWhereSmallestCast);
-            System.out.println();
 
+            int actorsInMoreThanOneMovie = movieSearch.countActorsInMoreThanOneMovie(movieList);
+            System.out.println("Number of actors in more than one movie: " + actorsInMoreThanOneMovie);
+
+            List<String> actorsInMostMovies= movieSearch.actorsInMostMovies(movieList);
+            System.out.println("Actors in most movies: " + actorsInMostMovies);
+
+            ///v1
             int numberOfLanguages = movieSearch.countNumberOfLanguages(movieList);
             System.out.println("Number of languages: " + numberOfLanguages);
-            System.out.println();
+
+            ///v2 with Hof
+            Function<Movie, Stream<String>> languageMapper = m -> m.getLanguages().stream();
+
+            int numberOfLanguagesHof = movieSearch.countNumberOfUniqueStringHof(movieList, languageMapper);
+            System.out.println("Number of languages with hof: " + numberOfLanguagesHof);
+
+            //TODO count number of distinct actor
+            Function<Movie, Stream<String>> actorMapper = m -> m.getCast().stream();
+
+            int numberOfActorHof = movieSearch.countNumberOfUniqueStringHof(movieList, actorMapper);
+            System.out.println("Number of actors with hof: " + numberOfActorHof);
+
+            //TODO count number of distinct genrer
+            Function<Movie, Stream<String>> genrerMapper = m -> m.getGenres().stream();
+
+            int numberOfGenrerHof = movieSearch.countNumberOfUniqueStringHof(movieList, genrerMapper);
+            System.out.println("Number of genrer with hof: " + numberOfGenrerHof);
 
 
-
+            boolean existsSameTitle= movieSearch.existsSameTitle(movieList);
+            System.out.println("Exists same title: " + existsSameTitle);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,6 +98,6 @@ public class MongoDBAtlasDownloadExample {
     }
 
     public static void main(String[] args) {
-        MongoDBAtlasDownloadExample m = new MongoDBAtlasDownloadExample();
+        Main m = new Main();
     }
 }
