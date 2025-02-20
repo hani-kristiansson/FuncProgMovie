@@ -10,15 +10,16 @@ import java.util.stream.Stream;
 public class MovieSearch {
 
     //Hur många filmer gjordes 1975 (enligt vårt data). Returnera ett tal
-    // need to cast to int because .count return type is long
+    // casted to int because .count return type is long
     public int countNumberOfMovies(List<Movie> movies) {
         return (int) movies.stream().count();
     }
 
     //Hitta längden på den film som var längst (högst runtime). Returnera ett tal.
+    //if it is stream then to use max, need to use comparator
     public int longestRuntimeInMinutes(List<Movie> movies) {
         return movies.stream()
-                .mapToInt(s -> s.getRuntime())
+                .mapToInt(movie -> movie.getRuntime())
                 .max()
                 .getAsInt(); //optional can have value in it or null so it needs this method to get int value
     }
@@ -61,8 +62,8 @@ public class MovieSearch {
     //Hur många skådisar var med i mer än 1 film? Returnera ett tal.
     public int countActorsInMoreThanOneMovie(List<Movie> movies) {
         return (int) movies.stream()
-                .flatMap(s-> s.getCast().stream())
-                .collect(Collectors.groupingBy(s -> s, Collectors.counting()))
+                .flatMap(movie-> movie.getCast().stream())
+                .collect(Collectors.groupingBy(actor -> actor, Collectors.counting()))
                 .values()
                 .stream()
                 .filter( l -> l > 1)
@@ -72,14 +73,14 @@ public class MovieSearch {
     //Vad hette den skådis som var med i flest filmer? Returnera en String eller list
     public List<String> actorsInMostMovies(List<Movie> movies) {
         return movies.stream()
-                .flatMap(m -> m.getCast().stream())
-                .collect(Collectors.groupingBy(a -> a, Collectors.counting()))
+                .flatMap(movie -> movie.getCast().stream())
+                .collect(Collectors.groupingBy(actor -> actor, Collectors.counting()))
                 .entrySet()
                 //[Entry("Jimmy", 10), ("Jennifer, 5)]
                 .stream()
 
                 .collect(Collectors.groupingBy(Map.Entry::getValue, Collectors.mapping(Map.Entry::getKey, Collectors.toList())))
-                // 10 -> ["actor1", "actor3"]
+                // 10 -> ["Jimmy", "actor3"]
                 .entrySet()
                 .stream()
 
@@ -91,7 +92,7 @@ public class MovieSearch {
     static String actorsInMostMovies2(List<Movie> movies) {
         return movies.stream()
                 .flatMap(m -> m.getCast().stream())
-                .collect(Collectors.groupingBy(a -> a, Collectors.counting()))
+                .collect(Collectors.groupingBy(actor -> actor, Collectors.counting()))
                 .entrySet()
                 //[Entry("Jimmy", 10), ("Jennifer, 5)]
                 .stream()
@@ -103,7 +104,7 @@ public class MovieSearch {
     //Hur många UNIKA språk har filmerna? Returnera ett tal.
     public int countNumberOfLanguages(List<Movie> movies) {
         return (int) movies.stream()
-                .flatMap(s -> s.getLanguages().stream())
+                .flatMap(movie -> movie.getLanguages().stream())
                 .distinct()
                 .count();
     }
@@ -113,7 +114,7 @@ public class MovieSearch {
     // s -> s.getLanguages().stream())
     public int countNumberOfUniqueStringHof(List<Movie> movies, Function<Movie, Stream<String>> mapper) {
         return (int) movies.stream()
-                .flatMap(s -> mapper.apply(s))
+                .flatMap(movie -> mapper.apply(movie))
                 .distinct()
                 .count();
     }
@@ -121,7 +122,7 @@ public class MovieSearch {
     //Finns det någon titel som mer än en film har? Returnera en bool.
     public boolean existsSameTitle(List<Movie> movies) {
         return movies.stream()
-                .collect(Collectors.groupingBy(m -> m.getTitle(), Collectors.counting()))
+                .collect(Collectors.groupingBy(movie -> movie.getTitle(), Collectors.counting()))
                 .values()
                 .stream()
                 .anyMatch(l -> l > 1);
