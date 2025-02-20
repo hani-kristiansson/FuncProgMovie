@@ -73,14 +73,17 @@ public class Main {
             ///v2 with Hof
             Function<Movie, Stream<String>> languageMapper = m -> m.getLanguages().stream();
 
+            //public int countNumberOfUniqueStringHof(List<Movie> movies, Function<Movie, Stream<String>> mapper)
             int numberOfLanguagesHof = movieSearch.countNumberOfUniqueStringHof(movieList, languageMapper);
             System.out.println("Number of languages with hof: " + numberOfLanguagesHof);
+
 
             //TODO count number of distinct actor
             Function<Movie, Stream<String>> actorMapper = m -> m.getCast().stream();
 
             int numberOfActorHof = movieSearch.countNumberOfUniqueStringHof(movieList, actorMapper);
             System.out.println("Number of actors with hof: " + numberOfActorHof);
+
 
             //TODO count number of distinct genrer
             Function<Movie, Stream<String>> genrerMapper = m -> m.getGenres().stream();
